@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mawar Putih Memory Vault</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        glass: 'rgba(255, 255, 255, 0.15)',
+                        'glass-card': 'rgba(255, 255, 255, 0.25)',
+                        'glass-border': 'rgba(255, 255, 255, 0.35)',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        romantic: ['Great Vibes', 'cursive'],
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-18px)' },
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(4px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-8px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(8px, 0, 0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Custom Styles & Ambient Glassmorphism Effect */
+        body {
+            /* Fallback background & SVG White Rose Pattern Ambient */
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.6) 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffffff;stop-opacity:0.05' /%3E%3Cstop offset='100%25' style='stop-color:%23ffffff;stop-opacity:0.01' /%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='none' stroke='url(%23grad)' stroke-width='1.5'%3E%3Cpath d='M400 350 C380 320 330 320 310 350 C290 380 320 420 400 470 C480 420 510 380 490 350 C470 320 420 320 400 350 Z' /%3E%3Cpath d='M400 330 C370 290 310 290 280 330 C250 370 290 430 400 490 C510 430 550 370 520 330 C490 290 430 290 400 330 Z' /%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Video/GIF Background overlay */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+            opacity: 0.35;
+            filter: contrast(110%) brightness(85%);
+        }
+
+        .dark-dim {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.85) 100%);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Custom Glass Card Styling */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.081);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Rose Petal Falling Effect Canvas */
+        #petalCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased select-none min-h-screen flex flex-col justify-between relative">
+
+    <!-- Petals Canvas Animation -->
+    <canvas id="petalCanvas"></canvas>
+
+    <!-- White Rose Visual Background (Loops smoothly) -->
+    <img class="bg-overlay" src="https://images.unsplash.com/photo-1559563458-527698bf5295?q=80&w=1920&auto=format&fit=crop" alt="White Roses Background" onerror="this.src='https://placehold.co/1920x1080/1e293b/ffffff?text=White+Roses+Background'">
+    <div class="dark-dim"></div>
+
+    <!-- Floating Romantic Text Header (Always visible & floating smoothly) -->
+    <header class="w-full text-center pt-8 pb-4 z-10">
+        <div class="inline-block animate-float">
+            <h1 class="font-romantic text-5xl md:text-7xl font-bold tracking-wide text-white drop-shadow-[0_4px_12px_rgba(255,255,255,0.6)]">
+                I Love You
+            </h1>
+            <p class="text-xs md:text-sm tracking-widest uppercase text-slate-300 opacity-80 mt-1 font-light">
+                <i class="fa-solid fa-heart text-red-400 text-xs mr-1"></i> Galeri Kenangan Abadi <i class="fa-solid fa-heart text-red-400 text-xs ml-1"></i>
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container mx-auto px-4 py-4 flex-grow flex items-center justify-center z-10 max-w-5xl">
+
+        <!-- 1. NUMPAD LOGIN SECTION -->
+        <section id="loginSection" class="w-full max-w-sm mx-auto glass-panel rounded-3xl p-6 md:p-8 animate-fade-in text-center relative overflow-hidden">
+            <div class="mb-6">
+                <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shadow-inner">
+                    <i id="lockIcon" class="fa-solid fa-lock text-2xl text-white/80 transition-all duration-300"></i>
+                </div>
+                <h2 class="text-xl font-semibold text-white tracking-wide">Masukkan PIN Rahasia</h2>
+                <p class="text-xs text-slate-300 mt-1">Gunakan kombinasi angka untuk membuka</p>
+            </div>
+
+            <!-- PIN Indicator Dots -->
+            <div id="pinDots" class="flex justify-center items-center gap-3 mb-6">
+                <span class="dot w-4 h-4 rounded-full border border-white/40 transition-all duration-200"></span>
+                <span class="dot w-4 h-4 rounded-full border border-white/40 transition-all duration-200"></span>
+                <span class="dot w-4 h-4 rounded-full border border-white/40 transition-all duration-200"></span>
+                <span class="dot w-4 h-4 rounded-full border border-white/40 transition-all duration-200"></span>
+                <span class="dot w-4 h-4 rounded-full border border-white/40 transition-all duration-200"></span>
+                <span class="dot w-4 h-4 rounded-full border border-white/40 transition-all duration-200"></span>
+            </div>
+
+            <!-- Error Message Box -->
+            <div id="errorMessage" class="h-6 text-xs text-rose-300 font-medium opacity-0 transition-opacity duration-200 mb-2 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> <span>PIN Salah! Silakan coba lagi.</span>
+            </div>
+
+            <!-- Modern Numpad Grid -->
+            <div class="grid grid-cols-3 gap-3 max-w-[260px] mx-auto">
+                <button onclick="pressNum('1')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">1</button>
+                <button onclick="pressNum('2')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">2</button>
+                <button onclick="pressNum('3')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">3</button>
+                <button onclick="pressNum('4')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">4</button>
+                <button onclick="pressNum('5')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">5</button>
+                <button onclick="pressNum('6')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">6</button>
+                <button onclick="pressNum('7')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">7</button>
+                <button onclick="pressNum('8')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">8</button>
+                <button onclick="pressNum('9')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">9</button>
+                <button onclick="clearPin()" class="glass-button h-14 rounded-2xl text-xs font-medium text-rose-200 uppercase tracking-wider">C</button>
+                <button onclick="pressNum('0')" class="glass-button h-14 rounded-2xl text-xl font-semibold text-white">0</button>
+                <button onclick="deletePin()" class="glass-button h-14 rounded-2xl text-sm text-slate-200"><i class="fa-solid fa-backspace"></i></button>
+            </div>
+
+            <p class="text-[10px] text-slate-400 mt-6 tracking-wider">Mawar Putih Storage • Privasi Terjaga</p>
+        </section>
+
+
+        <!-- 2. GALLERY SECTION (UNLOCKED STATE) -->
+        <section id="gallerySection" class="hidden w-full glass-panel rounded-3xl p-4 md:p-8 animate-fade-in my-4">
+            
+            <!-- Gallery Top Bar -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-white/10">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-photo-film text-pink-300"></i> Galeri Foto & Video
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1">i love u so much.</p>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <!-- Upload Button -->
+                    <label class="glass-button cursor-pointer px-4 py-2.5 rounded-xl text-xs font-semibold text-white flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-400/30">
+                        <i class="fa-solid fa-cloud-arrow-up text-emerald-300 text-sm"></i>
+                        <span>Unggah Media</span>
+                        <input type="file" id="mediaInput" multiple accept="image/*,video/*" class="hidden" onchange="handleFileUpload(event)">
+                    </label>
+
+                    <!-- Lock / Logout Button -->
+                    <button onclick="lockVault()" class="glass-button px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-200 flex items-center gap-2 bg-rose-500/20 hover:bg-rose-500/30 border-rose-400/30" title="Kunci Kembali">
+                        <i class="fa-solid fa-lock"></i>
+                        <span class="hidden md:inline">Kunci</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Upload Status / Progress Indicator -->
+            <div id="uploadProgress" class="hidden my-4 p-3 rounded-xl bg-white/10 border border-white/15 text-xs text-slate-200 flex items-center gap-3">
+                <i class="fa-solid fa-spinner fa-spin text-pink-300 text-base"></i>
+                <span id="uploadStatusText">Memproses file...</span>
+            </div>
+
+            <!-- Media Grid Display -->
+            <div id="mediaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 mt-6 min-h-[300px]">
+                <!-- Dynamic Items Inserted via JS -->
+            </div>
+
+            <!-- Empty State Display -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-16 text-center text-slate-300">
+                <div class="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4 text-3xl text-slate-400">
+                    <i class="fa-regular fa-images"></i>
+                </div>
+                <p class="text-base font-medium">Belum ada foto atau video yang disimpan</p>
+                <p class="text-xs text-slate-400 mt-1">Klik tombol "Unggah Media" di atas untuk menambahkan momen pertama Anda.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full text-center py-4 z-10 text-xs text-slate-400 font-light">
+        <p>Dihiasi dengan Ketulusan & Cinta • 231000</p>
+    </footer>
+
+
+    <!-- LIGHTBOX MODAL FOR FULL MEDIA PREVIEW -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex-col justify-between p-4 md:p-8 animate-fade-in">
+        <!-- Lightbox Header -->
+        <div class="flex items-center justify-between text-white z-10">
+            <span id="lightboxTitle" class="text-xs md:text-sm font-medium text-slate-300 truncate max-w-[70%]">Detail Media</span>
+            <button onclick="closeLightbox()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Lightbox Content Container -->
+        <div class="flex-grow flex items-center justify-center relative my-4 overflow-hidden">
+            <div id="lightboxMediaContainer" class="max-w-full max-h-[80vh] flex items-center justify-center">
+                <!-- Dynamic Media Tag -->
+            </div>
+        </div>
+
+        <!-- Lightbox Footer Controls -->
+        <div class="flex justify-center gap-4 z-10">
+            <button id="downloadBtn" class="glass-button px-5 py-2.5 rounded-xl text-xs font-medium text-white flex items-center gap-2">
+                <i class="fa-solid fa-download"></i> Unduh
+            </button>
+            <button id="deleteBtn" class="glass-button px-5 py-2.5 rounded-xl text-xs font-medium text-rose-300 hover:text-rose-100 bg-rose-500/20 border-rose-400/30 flex items-center gap-2">
+                <i class="fa-solid fa-trash-can"></i> Hapus Media
+            </button>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. CONFIGURATION & STATE ---
+        const TARGET_PIN = "231000";
+        let currentPin = "";
+        let db = null;
+        let activeMediaItem = null;
+
+        // --- 2. INDEXEDDB DATABASE SETUP (PERMANENT LOCAL STORAGE FOR LARGE MEDIA) ---
+        const DB_NAME = "MawarPutihMemoryVaultDB";
+        const DB_VERSION = 1;
+        const STORE_NAME = "media_items";
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+                    }
+                };
+
+                request.onsuccess = (e) => {
+                    db = e.target.result;
+                    resolve(db);
+                };
+
+                request.onerror = (e) => {
+                    console.error("IndexedDB Error:", e.target.error);
+                    reject(e.target.error);
+                };
+            });
+        }
+
+        // Save media to IndexedDB
+        function saveMediaToDB(mediaObj) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, "readwrite");
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.put(mediaObj);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        // Fetch all media from IndexedDB
+        function getAllMediaFromDB() {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    resolve([]);
+                    return;
+                }
+                const tx = db.transaction(STORE_NAME, "readonly");
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.getAll();
+                req.onsuccess = () => resolve(req.result || []);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        // Delete item from IndexedDB
+        function deleteMediaFromDB(id) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, "readwrite");
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.delete(id);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+
+        // --- 3. NUMPAD & LOGIN LOGIC ---
+        function pressNum(num) {
+            if (currentPin.length < 6) {
+                currentPin += num;
+                updatePinDots();
+                hideError();
+
+                // Check automatically when PIN length reaches 6
+                if (currentPin.length === 6) {
+                    setTimeout(verifyPin, 150);
+                }
+            }
+        }
+
+        function deletePin() {
+            if (currentPin.length > 0) {
+                currentPin = currentPin.slice(0, -1);
+                updatePinDots();
+                hideError();
+            }
+        }
+
+        function clearPin() {
+            currentPin = "";
+            updatePinDots();
+            hideError();
+        }
+
+        function updatePinDots() {
+            const dots = document.querySelectorAll('#pinDots .dot');
+            dots.forEach((dot, idx) => {
+                if (idx < currentPin.length) {
+                    dot.classList.add('bg-white', 'scale-110', 'shadow-[0_0_10px_rgba(255,255,255,0.8)]');
+                } else {
+                    dot.classList.remove('bg-white', 'scale-110', 'shadow-[0_0_10px_rgba(255,255,255,0.8)]');
+                }
+            });
+        }
+
+        function verifyPin() {
+            const loginCard = document.getElementById('loginSection');
+            const lockIcon = document.getElementById('lockIcon');
+
+            if (currentPin === TARGET_PIN) {
+                // Success Login
+                lockIcon.className = "fa-solid fa-lock-open text-2xl text-emerald-300";
+                setTimeout(() => {
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('gallerySection').classList.remove('hidden');
+                    loadGalleryItems();
+                }, 400);
+            } else {
+                // Failed PIN
+                showError();
+                loginCard.classList.add('animate-shake');
+                setTimeout(() => {
+                    loginCard.classList.remove('animate-shake');
+                    clearPin();
+                }, 500);
+            }
+        }
+
+        function showError() {
+            const errDiv = document.getElementById('errorMessage');
+            errDiv.classList.remove('opacity-0');
+        }
+
+        function hideError() {
+            const errDiv = document.getElementById('errorMessage');
+            errDiv.classList.add('opacity-0');
+        }
+
+        function lockVault() {
+            currentPin = "";
+            updatePinDots();
+            document.getElementById('lockIcon').className = "fa-solid fa-lock text-2xl text-white/80";
+            document.getElementById('gallerySection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+        }
+
+
+        // --- 4. MEDIA UPLOAD & GALLERY LOGIC ---
+        async function handleFileUpload(event) {
+            const files = Array.from(event.target.files);
+            if (!files.length) return;
+
+            const progressBox = document.getElementById('uploadProgress');
+            const statusText = document.getElementById('uploadStatusText');
+            progressBox.classList.remove('hidden');
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                statusText.innerText = `Mengunggah (${i + 1}/${files.length}): ${file.name}`;
+
+                try {
+                    const base64Data = await fileToBase64(file);
+                    const mediaObj = {
+                        id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                        name: file.name,
+                        type: file.type.startsWith('video') ? 'video' : 'image',
+                        mimeType: file.type,
+                        data: base64Data,
+                        dateAdded: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                    };
+
+                    await saveMediaToDB(mediaObj);
+                } catch (err) {
+                    console.error("Gagal membaca/menyimpan file:", err);
+                }
+            }
+
+            progressBox.classList.add('hidden');
+            event.target.value = ""; // Reset input
+            loadGalleryItems(); // Refresh Gallery Display
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function loadGalleryItems() {
+            const mediaGrid = document.getElementById('mediaGrid');
+            const emptyState = document.getElementById('emptyState');
+            mediaGrid.innerHTML = "";
+
+            const items = await getAllMediaFromDB();
+
+            if (items.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+
+                // Sort items (newest first)
+                items.reverse().forEach(item => {
+                    const card = createMediaCard(item);
+                    mediaGrid.appendChild(card);
+                });
+            }
+        }
+
+        function createMediaCard(item) {
+            const div = document.createElement('div');
+            div.className = "group relative rounded-2xl overflow-hidden glass-panel border border-white/20 aspect-square cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl";
+            div.onclick = () => openLightbox(item);
+
+            let previewHTML = "";
+            if (item.type === 'video') {
+                previewHTML = `
+                    <video class="w-full h-full object-cover pointer-events-none">
+                        <source src="${item.data}" type="${item.mimeType}">
+                    </video>
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-white/30 backdrop-blur-md border border-white/40 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-play ml-0.5"></i>
+                        </div>
+                    </div>
+                `;
+            } else {
+                previewHTML = `<img src="${item.data}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />`;
+            }
+
+            div.innerHTML = `
+                ${previewHTML}
+                <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between text-white text-[11px]">
+                    <span class="truncate max-w-[70%] font-light">${item.name}</span>
+                    <span class="text-[9px] text-slate-300">${item.dateAdded}</span>
+                </div>
+            `;
+
+            return div;
+        }
+
+
+        // --- 5. LIGHTBOX & MODAL LOGIC ---
+        function openLightbox(item) {
+            activeMediaItem = item;
+            const lightbox = document.getElementById('lightbox');
+            const container = document.getElementById('lightboxMediaContainer');
+            const title = document.getElementById('lightboxTitle');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+
+            title.innerText = item.name + ` (${item.dateAdded})`;
+            container.innerHTML = "";
+
+            if (item.type === 'video') {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.autoplay = true;
+                video.className = "max-w-full max-h-[75vh] rounded-2xl shadow-2xl border border-white/10";
+                const src = document.createElement('source');
+                src.src = item.data;
+                src.type = item.mimeType;
+                video.appendChild(src);
+                container.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = item.data;
+                img.alt = item.name;
+                img.className = "max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl border border-white/10";
+                container.appendChild(img);
+            }
+
+            // Download handler
+            downloadBtn.onclick = () => {
+                const a = document.createElement('a');
+                a.href = item.data;
+                a.download = item.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            // Delete handler
+            deleteBtn.onclick = async () => {
+                if (confirm(`Apakah Anda yakin ingin menghapus "${item.name}"?`)) {
+                    await deleteMediaFromDB(item.id);
+                    closeLightbox();
+                    loadGalleryItems();
+                }
+            };
+
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            const container = document.getElementById('lightboxMediaContainer');
+            container.innerHTML = ""; // Stop video playback
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            activeMediaItem = null;
+        }
+
+
+        // --- 6. PETAL ANIMATION CANVAS (FALLING WHITE ROSE PETALS) ---
+        function initPetalAnimation() {
+            const canvas = document.getElementById('petalCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = (canvas.width = window.innerWidth);
+            let height = (canvas.height = window.innerHeight);
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const numPetals = 25;
+            const petals = [];
+
+            class Petal {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * -height;
+                    this.size = Math.random() * 8 + 6;
+                    this.speedY = Math.random() * 1 + 0.5;
+                    this.speedX = Math.random() * 0.8 - 0.4;
+                    this.opacity = Math.random() * 0.5 + 0.3;
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = Math.random() * 2 - 1;
+                }
+
+                update() {
+                    this.y += this.speedY;
+                    this.x += Math.sin(this.y * 0.01) + this.speedX;
+                    this.rotation += this.rotationSpeed;
+
+                    if (this.y > height) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate((this.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = this.opacity;
+
+                    // Draw soft white petal shape
+                    ctx.beginPath();
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(-this.size, -this.size, -this.size * 1.5, this.size, 0, this.size * 1.5);
+                    ctx.bezierCurveTo(this.size * 1.5, this.size, this.size, -this.size, 0, 0);
+                    ctx.fill();
+
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < numPetals; i++) {
+                petals.push(new Petal());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                petals.forEach((p) => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+
+        // --- 7. APPLICATION INITIALIZATION ---
+        window.onload = async function() {
+            try {
+                await initDB();
+            } catch (e) {
+                console.error("Gagal menginisialisasi database lokal", e);
+            }
+            initPetalAnimation();
+        };
+    </script>
+</body>
+</html>
